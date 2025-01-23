@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
+/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 23:06:07 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/01/21 13:36:51 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/01/21 16:53:43 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ void	add_back(t_stack *stack, int value)
 
 	last_node = malloc(sizeof(t_node));
 	if (!last_node)
-		return;
+		return ;
 	last_node->data = value;
 	last_node->next = NULL;
 
 	if (stack->top == NULL)
 	{
 		stack->top = last_node;
-		return;
+		return ;
 	}
 	current = stack->top;
 	while (current->next != NULL)
@@ -69,8 +69,8 @@ void	add_back(t_stack *stack, int value)
 
 int count_nodes(t_stack *stack)
 {
-	int count;
-	t_node *current;
+	int		count;
+	t_node	*current;
 
 	count = 0;
 	current = stack->top;
@@ -84,8 +84,8 @@ int count_nodes(t_stack *stack)
 
 int	fill_stack(t_stack *stack, char **av)
 {
-	t_node *current;
-	int	i;
+	t_node	*current;
+	int		i;
 
 
 }
@@ -108,14 +108,14 @@ void delete_node(t_stack *stack, int value)
 	t_node	*prev;
 
 	if (stack->top == NULL)
-		return;
+		return ;
 
 	if (stack->top->data == value)
 	{
 		current = stack->top;
 		stack->top = stack->top->next;
 		free(current);
-		return;
+		return ;
 	}
 	current = stack->top;
 	prev = stack->top;
@@ -133,7 +133,7 @@ void delete_node(t_stack *stack, int value)
 
 int main(int ac, char **av)
 {
-	t_stack stack;
+	t_stack	stack;
 
 	stack.top = NULL;
 

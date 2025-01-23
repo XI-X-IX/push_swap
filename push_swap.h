@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
+/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 22:20:24 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/01/21 11:20:11 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/01/21 18:48:08 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,21 @@
 # include <stdio.h> // A ENLEVER
 
 // ERRORS
-# define ERR_ARGS	"🛑 May use more than 3 arguments"
-# define ERR_MAP	"🛑 Error reading map file."
-# define ERR_MLX	"🛑 Error initializing MLX."
-# define ERR_OPEN	"🛑 Unable to open the file: "
-# define ERR_PATH	"🛑 No valid path to exit !"
+# define ERR_ARGS		"🛑 May use more than 3 arguments"
+# define ERR_DOUBLE		"🛑 Same number found"
+# define ERR_DIGIT		"🛑 Error "
+# define ERR_OPEN		"🛑 Unable to open the file: "
+# define ERR_PATH		"🛑 No valid path to exit !"
 
 // COLORS
-# define OK_COLOR		= "\033[0;32m"
-# define NO_COLOR 		= "\033[0m"
-# define WARN_COLOR 	= "\033[0;33m"
-# define ERROR_COLOR 	= "\033[0;31m"
+# define OK_COLOR		"\033[0;32m"
+# define NO_COLOR		"\033[0m"
+# define WARN_COLOR		"\033[0;33m"
+# define ERROR_COLOR	"\033[0;31m"
+
+// RETURN CODES
+# define SUCCESS		0
+# define ERROR			1
 
 // STRUCTURES
 typedef struct s_node

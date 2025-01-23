@@ -17,13 +17,13 @@ CFLAGS := -Wall -Wextra -Werror
 # System Detection
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Linux)
-	MLXFLAGS = -Lmlx_Linux -lmlx_Linux -L ./mlx -Imlx_Linux -L ./libft -lft -lXext -lX11 -lm -lz
+
 endif
 ifeq ($(UNAME_S), Darwin)
-	MLXFLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit
+
 endif
 
-SOURCE 		=  \
+SOURCE 		=  push_swap.c errors.c \
 			 \
 
 OBJDIR 		= obj
@@ -32,7 +32,7 @@ DIRS 		= $(OBJDIR)
 
 LIBFT 		= libft/
 
-# Contains the X11 and MLX header files
+
 INCLUDES 	= -Ilibft
 
 #•❅──────✧❅✦❅✧──────❅••❅──────✧❅✦❅✧─RULES─✧❅✦❅✧──────❅••❅──────✧❅✦❅✧──────❅•#
@@ -51,7 +51,6 @@ $(OBJDIR)/%.o: %.c $(DEPS)
 			@$(CC) $(CFLAGS) -c -o $@ $< $(INCLUDES)
 
 clean:
-			@make clean -C $(MINILIBX) >/dev/null
 			@make clean -C $(LIBFT) >/dev/null
 			@rm -rf $(OBJDIR)
 			@echo "\n\n$(WARN_COLOR)Cleaned object files\n$(NO_COLOR)"
