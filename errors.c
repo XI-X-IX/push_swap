@@ -6,33 +6,35 @@
 /*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 17:46:50 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/01/21 20:29:22 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/01/29 10:08:11 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-/* ************************************************************************** */
-/*                                                                            */
-/*   is_double                                                                */
-/*                                                                            */
-/*   Vérifie s'il y a des doublons parmi les arguments.                       */
-/*   Retourne SUCCESS s'il n'y a pas de doublons, sinon retourne ERROR.       */
-/*                                                                            */
-/* ************************************************************************** */
+// =========================================
+// has_duplicates
+// =========================================
+//
+// Vérifie s'il y a des doublons parmi
+// les arguments.
+//
+// Retour: SUCCESS (pas de doublons)
+//         ERROR  (doublons trouvés)
+// =========================================
 
-static int	is_double(int ac, char **av)
+static int	has_duplicates(int ac, char **av)
 {
 	int	i;
 	int	j;
 
 	i = 1;
-	j = 2;
 	while (i < ac)
 	{
+		j = i + 1;
 		while (j < ac)
 		{
-			if (ft_atoi(av[i] == ft_atoi(av[j])))
+			if (ft_atoi(av[i]) == ft_atoi(av[j]))
 				return (ERROR);
 			j++;
 		}
@@ -41,20 +43,24 @@ static int	is_double(int ac, char **av)
 	return (SUCCESS);
 }
 
-/* ************************************************************************** */
-/*                                                                            */
-/*   is_number                                                                */
-/*                                                                            */
-/*   Vérifie si une chaîne de caractères représente un nombre valide.         */
-/*   Retourne SUCCESS si c'est un nombre valide, sinon retourne ERROR.        */
-/*                                                                            */
-/* ************************************************************************** */
+// =========================================
+// is_number
+// =========================================
+//
+// Vérifie si une chaîne de caractères
+// représente un nombre valide.
+//
+// Retour: SUCCESS (nombre valide)
+//         ERROR  (invalide)
+// =========================================
 
 static int	is_number(char *str)
 {
 	int	i;
 
 	i = 0;
+	if (str[i] == '\0')
+		return (ERROR);
 	while (str[i])
 	{
 		if (str[i] == '-' && i == 0)
@@ -66,16 +72,17 @@ static int	is_number(char *str)
 	return (SUCCESS);
 }
 
-/* ************************************************************************** */
-/*                                                                            */
-/*   check_number                                                             */
-/*                                                                            */
-/*   Vérifie les arguments pour s'assurer qu'ils sont des nombres valides     */
-/*   et qu'il n'y a pas de doublons. Si un argument n'est pas valide ou       */
-/*   s'il y a des doublons, affiche un message d'erreur et termine le         */
-/*   programme.                                                               */
-/*                                                                            */
-/* ************************************************************************** */
+// =========================================
+// check_number_and_duplicates
+// =========================================
+//
+// Vérifie les arguments pour s'assurer
+// qu'ils sont des nombres valides et qu'il
+// n'y a pas de doublons.
+//
+// Affiche erreur et termine si invalide
+// ou si doublons trouvés.
+// =========================================
 
 void	check_number_and_duplicates(int ac, char **av)
 {
@@ -91,22 +98,23 @@ void	check_number_and_duplicates(int ac, char **av)
 		}
 		i++;
 	}
-	if (is_double(ac, av) == ERROR)
+	if (has_duplicates(ac, av) == ERROR)
 	{
 		ft_printf("%s%s%s", ERROR_COLOR, ERR_DOUBLE, NO_COLOR);
 		exit(ERROR);
 	}
 }
 
-/* ************************************************************************** */
-/*                                                                            */
-/*   check_args                                                               */
-/*                                                                            */
-/*   Vérifie le nombre d'arguments et appelle check_number pour valider       */
-/*   les arguments. Si le nombre d'arguments est insuffisant, affiche un      */
-/*   message d'erreur et termine le programme.                                */
-/*                                                                            */
-/* ************************************************************************** */
+// =========================================
+// check_args
+// =========================================
+//
+// Vérifie le nombre d'arguments et appelle
+// check_number pour leur validation.
+//
+// Affiche erreur et termine si nombre
+// d'arguments insuffisant.
+// =========================================
 
 void	check_args(int ac, char **av)
 {
