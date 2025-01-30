@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   moves.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 22:35:22 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/01/29 12:34:57 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:37:46 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,88 @@ void	ss(t_stack *a, t_stack *b)
 {
 	sa(a);
 	sb(b);
+}
+
+void	pa(t_stack *a, t_stack *b)
+{
+	t_node	*psh;
+
+	if (!b || !b->top)
+		return ;
+	psh = b->top;
+	b->top = b->top->next;
+	psh->next = a->top;
+	a->top = psh;
+}
+
+void	pb(t_stack *a, t_stack *b)
+{
+	t_node	*psh;
+
+	if (!a || !a->top)
+		return ;
+	psh = a->top;
+	a->top = a->top->next;
+	psh->next = b->top;
+	b->top = psh;
+}
+
+void	ra(t_stack *a)
+{
+	t_node	*tmp;
+	t_node	*new;
+	t_node	*i;
+
+	tmp = a->top;
+	new = a->top->next;
+	a->top = new;
+	i = new;
+	while (i->next != NULL)
+		i = i->next;
+	i->next = tmp;
+	tmp->next = NULL;
+}
+
+void	rb(t_stack *b)
+{
+	t_node	*tmp;
+	t_node	*new;
+	t_node	*i;
+
+	tmp = b->top;
+	new = b->top->next;
+	b->top = new;
+	i = new;
+	while (i->next != NULL)
+		i = i->next;
+	i->next = tmp;
+	tmp->next = NULL;
+}
+
+void	rr(t_stack *a, t_stack *b)
+{
+	ra(a);
+	rb(b);
+}
+
+void	rra(t_stack *a)
+{
+	t_node	*new;
+	t_node	*tmp;
+	t_node	*i;
+
+	tmp = a-
+
+	
+}
+
+void	rrb(t_stack *b)
+{
+
+}
+
+void	rrr(t_stack *a, t_stack *b)
+{
+	rra(a);
+	rrb(b);
 }
