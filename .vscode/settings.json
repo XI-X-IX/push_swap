@@ -15,6 +15,14 @@
 		"random": "c",
 		"unordered_map": "c",
 		"utility": "c",
-		"format": "c"
+		"format": "c",
+		"__config": "cpp",
+		"locale": "cpp",
+		"atomic": "cpp",
+		"ostream": "cpp",
+		"sstream": "cpp",
+		"istream": "c",
+		"streambuf": "c",
+		"algorithm": "c"
 	}
 }

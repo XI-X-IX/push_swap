@@ -7,76 +7,77 @@
 
 #•❅──────✧❅✦❅✧──────❅••❅──────✧❅✦❅✧──NAME──✧❅✦❅✧──────❅••❅──────✧❅✦❅✧──────❅•#
 
-NAME 		:= push_swap
-WASM_NAME 	:= push_swap.wasm
+NAME 			:= ../checker
 
 #•❅──────✧❅✦❅✧──────❅••❅──────✧❅✦❅✧───CC───✧❅✦❅✧──────❅••❅──────✧❅✦❅✧──────❅•#
 
-CC 			:= gcc
-CFLAGS 		:= -Wall -Wextra -Werror
-EMCC		:= emcc
+CC 				:= gcc
+CFLAGS 			:= -Wall -Wextra -Werror
 
-SOURCE 		= $(wildcard src/*.c)
-BONUS_SOURCES := $(wildcard bonus/*.c)
+# Chemins importants
+MAIN_DIR		= ..
+LIBFT_DIR		= ../libft
+SRC_DIR			= ../src
 
-OBJDIR 		= obj
-OBJS 		= $(SOURCE:src/%.c=$(OBJDIR)/%.o)
-DEPS		= push_swap.h
+# Source files
+BONUS_SRCS		:= $(wildcard *.c)
+COMMON_SRCS		:= $(filter-out $(SRC_DIR)/push_swap.c, $(wildcard $(SRC_DIR)/*.c))
 
-LIBFT 		= libft
-LIBFT_LIB 	= $(LIBFT)/libft.a
-INCLUDES 	= -Ilibft -I.
+# Object organization
+OBJDIR			:= obj
+BONUS_OBJS		:= $(BONUS_SRCS:%.c=$(OBJDIR)/%.o)
+COMMON_OBJS		:= $(notdir $(COMMON_SRCS))
+COMMON_OBJS		:= $(COMMON_OBJS:%.c=$(OBJDIR)/%.o)
 
-BONUS_NAME	= checker
-BONUS_PATH	= bonus
+# Headers and libraries
+DEPS			:= checker_bonus.h
+INCLUDES		:= -I$(LIBFT_DIR) -I$(MAIN_DIR)
+LIBFT_LIB		:= $(LIBFT_DIR)/libft.a
+
+# Debug information
+$(info BONUS_SRCS = $(BONUS_SRCS))
+$(info COMMON_SRCS = $(COMMON_SRCS))
+$(info BONUS_OBJS = $(BONUS_OBJS))
+$(info COMMON_OBJS = $(COMMON_OBJS))
+
 
 #•❅──────✧❅✦❅✧──────❅••❅──────✧❅✦❅✧─RULES─✧❅✦❅✧──────❅••❅──────✧❅✦❅✧──────❅•#
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT_LIB)
-	@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT) -lft -o $(NAME)
-	@echo "\n\n$(OK_COLOR)✅  push_swap ready\n\n$(NO_COLOR)"
-
-$(BONUS_NAME): $(BONUS_OBJS) $(LIBFT_LIB)
-	@$(CC) $(CFLAGS) $(BONUS_OBJS) -L$(LIBFT) -lft -o $(BONUS_NAME)
+# Final compilation and linking
+$(NAME): $(BONUS_OBJS) $(COMMON_OBJS) $(LIBFT_LIB)
+	@$(CC) $(CFLAGS) $^ -L$(LIBFT_DIR) -lft -o $@
 	@echo "\n\n$(OK_COLOR)✅  checker ready\n\n$(NO_COLOR)"
 
-wasm: $(WASM_NAME)
+# Compilation rule for bonus source files
+$(OBJDIR)/%.o: %.c $(DEPS) | makedirs
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(WASM_NAME): $(OBJS) $(LIBFT_LIB)
-	@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT) -lft -o $(WASM_NAME)
-	@echo "\n\n$(OK_COLOR)✅  push_swap.wasm ready\n\n$(NO_COLOR)"
+# Compilation rule for common source files
+$(OBJDIR)/%.o: $(SRC_DIR)/%.c | makedirs
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+# Ensure libft is compiled
 $(LIBFT_LIB):
-	@make -C $(LIBFT) CC=$(CC) >/dev/null
-
-$(OBJDIR)/%.o: src/%.c $(DEPS) | makedirs
-	@$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
-
-$(OBJDIR)/%.o: bonus/%.c $(DEPS) | makedirs
-	@$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
+	@make -C $(LIBFT_DIR)
 
 makedirs:
 	@mkdir -p $(OBJDIR)
 
-bonus: $(BONUS_NAME)
-
 clean:
-	@make clean -C $(LIBFT) CC=$(CC) >/dev/null
 	@rm -rf $(OBJDIR)
-	@echo "\n\n$(WARN_COLOR)Cleaned object files\n$(NO_COLOR)"
+	@echo "\n\n$(WARN_COLOR)Cleaned checker object files\n$(NO_COLOR)"
 
 fclean: clean
-	@make fclean -C $(LIBFT) CC=$(CC) >/dev/null
-	@rm -rf $(NAME) $(BONUS_NAME) $(WASM_NAME)
-	@echo "\n$(ERROR_COLOR)🚮 Program removed\n\n$(NO_COLOR)"
+	@rm -f $(NAME)
+	@echo "\n$(ERROR_COLOR)🚮 Checker program removed\n\n$(NO_COLOR)"
 
 re: fclean all
 
 #•❅──────✧❅✦❅✧──────❅••❅──────✧❅✦❅✧─IGNORE─✧❅✦❅✧──────❅••❅──────✧❅✦❅✧──────❅•#
 
-.PHONY: all clean fclean re makedirs bonus
+.PHONY: all clean fclean re makedirs
 
 #•❅──────✧❅✦❅✧──────❅••❅──────✧❅✦❅✧─COLOR──✧❅✦❅✧──────❅••❅──────✧❅✦❅✧──────❅•#
 
