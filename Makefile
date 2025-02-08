@@ -38,18 +38,18 @@ $(NAME): $(OBJS) $(LIBFT_LIB)
 	@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT) -lft -o $(NAME)
 	@echo "\n\n$(OK_COLOR)✅  push_swap ready\n\n$(NO_COLOR)"
 
-$(BONUS_NAME): $(BONUS_OBJS) $(LIBFT_LIB)
-	@$(CC) $(CFLAGS) $(BONUS_OBJS) -L$(LIBFT) -lft -o $(BONUS_NAME)
+$(BONUS_NAME): $(BONUS_OBJS) $(LIBFT_LIB) bonus/main_bonus.o
+	@$(CC) $(CFLAGS) $(BONUS_OBJS) bonus/main_bonus.o -L$(LIBFT) -lft -o $(BONUS_NAME)
 	@echo "\n\n$(OK_COLOR)✅  checker ready\n\n$(NO_COLOR)"
 
 wasm: $(WASM_NAME)
 
 $(WASM_NAME): $(OBJS) $(LIBFT_LIB)
-	@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT) -lft -o $(WASM_NAME)
+	@$(EMCC) $(CFLAGS) $(OBJS) -L$(LIBFT) -lft -o $(WASM_NAME)
 	@echo "\n\n$(OK_COLOR)✅  push_swap.wasm ready\n\n$(NO_COLOR)"
 
 $(LIBFT_LIB):
-	@make -C $(LIBFT) CC=$(CC) >/dev/null
+	@make -C $(LIBFT) >/dev/null
 
 $(OBJDIR)/%.o: src/%.c $(DEPS) | makedirs
 	@$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
@@ -57,18 +57,21 @@ $(OBJDIR)/%.o: src/%.c $(DEPS) | makedirs
 $(OBJDIR)/%.o: bonus/%.c $(DEPS) | makedirs
 	@$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
 
+bonus/main_bonus.o: bonus/main_bonus.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 makedirs:
 	@mkdir -p $(OBJDIR)
 
 bonus: $(BONUS_NAME)
 
 clean:
-	@make clean -C $(LIBFT) CC=$(CC) >/dev/null
+	@make clean -C $(LIBFT) >/dev/null
 	@rm -rf $(OBJDIR)
 	@echo "\n\n$(WARN_COLOR)Cleaned object files\n$(NO_COLOR)"
 
 fclean: clean
-	@make fclean -C $(LIBFT) CC=$(CC) >/dev/null
+	@make fclean -C $(LIBFT) >/dev/null
 	@rm -rf $(NAME) $(BONUS_NAME) $(WASM_NAME)
 	@echo "\n$(ERROR_COLOR)🚮 Program removed\n\n$(NO_COLOR)"
 
