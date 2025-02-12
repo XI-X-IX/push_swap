@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 20:33:18 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/06 13:26:14 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:35:24 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,8 @@ t_node	*new_node(int data)
 	new = malloc(sizeof(t_node));
 	if (!new)
 		return (NULL);
+	ft_memset(new, 0, sizeof(t_node));
 	new->data = data;
-	new->next = NULL;
-	new->prev = NULL;
 	return (new);
 }
 

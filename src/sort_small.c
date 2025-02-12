@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   sort_small.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 15:02:43 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/05 17:28:03 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:18:03 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+static void	rotate_to_target_a(t_stack *a, int target_pos)
+{
+	while (target_pos > 0 && target_pos <= a->size / 2)
+	{
+		ra(a);
+		target_pos--;
+	}
+	while (target_pos > a->size / 2 && target_pos < a->size)
+	{
+		rra(a);
+		target_pos++;
+	}
+}
 
 void	sort_three(t_stack *a)
 {
@@ -43,56 +57,25 @@ void	sort_three(t_stack *a)
 
 void	sort_four(t_stack *a, t_stack *b)
 {
-	int	min;
-	int	pos;
+	int	min_pos;
 
-	min = find_min(a);
-	pos = find_position(a, min);
-	while (a->top->data != min)
-	{
-		if (pos <= a->size / 2)
-			ra(a);
-		else
-			rra(a);
-	}
+	min_pos = find_min(a);
+	rotate_to_target_a(a, min_pos);
 	pb(a, b);
 	sort_three(a);
 	pa(a, b);
 }
 
-void	find_and_position_min(t_stack *a, t_stack *b)
-{
-	int	min;
-	int	pos;
-
-	min = find_min(a);
-	pos = find_position(a, min);
-	while (a->top->data != min)
-	{
-		if (pos <= a->size / 2)
-			ra(a);
-		else
-			rra(a);
-	}
-	pb(a, b);
-}
-
 void	sort_five(t_stack *a, t_stack *b)
 {
 	int	i;
-	int	min;
+	int	min_pos;
 
 	i = 0;
 	while (i < 2)
 	{
-		min = find_min(a);
-		while (a->top->data != min)
-		{
-			if (find_position(a, min) <= a->size / 2)
-				ra(a);
-			else
-				rra(a);
-		}
+		min_pos = find_min(a);
+		rotate_to_target_a(a, min_pos);
 		pb(a, b);
 		i++;
 	}

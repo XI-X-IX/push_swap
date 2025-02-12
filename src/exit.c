@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 22:41:03 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/07 14:25:48 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:52:41 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
 
 void	free_stacks(t_stack *a, t_stack *b)
 {
@@ -19,6 +18,15 @@ void	free_stacks(t_stack *a, t_stack *b)
 		free_stack(a);
 	if (b)
 		free_stack(b);
+}
+
+void	free_cost(t_node *node)
+{
+	if (node && node->cost)
+	{
+		free(node->cost);
+		node->cost = NULL;
+	}
 }
 
 void	free_stack(t_stack *stack)
@@ -32,10 +40,24 @@ void	free_stack(t_stack *stack)
 	while (current)
 	{
 		next = current->next;
+		free_cost(current);
 		free(current);
 		current = next;
 	}
 	free(stack);
+}
+
+void	free_split(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
 }
 
 void	exit_error(t_stack *a, t_stack *b)

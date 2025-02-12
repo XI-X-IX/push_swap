@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:41:36 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/04 10:54:21 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:44:14 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,58 @@
 
 int	find_min(t_stack *a)
 {
-	t_node	*i;
+	t_node	*current;
 	int		min;
+	int		pos;
+	int		min_pos;
 
 	if (!a || !a->top)
-		return (INT_MAX);
-	i = a->top;
-	min = i->data;
-	while (i)
+		return (-1);
+
+	current = a->top;
+	min = current->data;
+	min_pos = 0;
+	pos = 0;
+	while (current)
 	{
-		if (i->data < min)
+		if (current->data < min)
 		{
-			min = i->data;
+			min = current->data;
+			min_pos = pos;
 		}
-		i = i->next;
+		current = current->next;
+		pos++;
 	}
-	return (min);
+	return (min_pos);
 }
 
 int	find_max(t_stack *a)
 {
+	t_node	*current;
 	int		max;
-	t_node	*i;
+	int		pos;
+	int		max_pos;
 
 	if (!a || !a->top)
-		return (INT_MIN);
-	i = a->top;
-	max = i->data;
-	while (i)
+		return (-1);
+	current = a->top;
+	max = current->index;
+	max_pos = 0;
+	pos = 0;
+	while (current)
 	{
-		if (i->data > max)
-			max = i->data;
-		i = i->next;
+		if (current->index > max)
+		{
+			max = current->index;
+			max_pos = pos;
+		}
+		current = current->next;
+		pos++;
 	}
-	return (max);
+	return (max_pos);
 }
 
-int	find_position(t_stack *a, int min)
+int	find_position(t_stack *a, int index)
 {
 	t_node	*i;
 	int		position;
@@ -61,43 +76,26 @@ int	find_position(t_stack *a, int min)
 	position = 0;
 	while (i)
 	{
-		if (i->data == min)
+		if (i->index == index)
 			return (position);
 		i = i->next;
 		position++;
 	}
-	return (position);
+	return (-1);
 }
 
-void	sort_stack(t_stack *a, t_stack *b)
+int	is_sorted(t_stack *stack)
 {
-	if (a->size == 2)
-	{
-		if (a->top->data > a->top->next->data)
-			sa(a);
-	}
-	else if (a->size == 3)
-		sort_three(a);
-	else if (a->size == 4)
-		sort_four(a, b);
-	else if (a->size == 5)
-		sort_five(a, b);
-	else
-		sort_big(a, b);
-}
+	t_node	*current;
 
-int	is_sorted(t_stack *a)
-{
-	t_node	*i;
-
-	if (!a || !a->top)
-		return (FALSE);
-	i = a->top;
-	while (i->next)
+	if (!stack || !stack->top)
+		return (1);
+	current = stack->top;
+	while (current && current->next)
 	{
-		if (i->data > i->next->data)
-			return (FALSE);
-		i = i->next;
+		if (current->data > current->next->data)
+			return (0);
+		current = current->next;
 	}
-	return (TRUE);
+	return (1);
 }

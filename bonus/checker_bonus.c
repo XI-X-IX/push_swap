@@ -3,26 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   checker_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 23:57:38 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/08 12:30:39 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:50:18 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker_bonus.h"
 
-void print_detailed_stack(t_stack *stack, const char *message)
+static int	first_exe(t_stack *a, t_stack *b, char *instruction)
 {
-    t_node *current = stack->top;
+	if (ft_strstr(instruction, "sa"))
+		swap(a);
+	else if (ft_strstr(instruction, "sb"))
+		swap(b);
+	else if (ft_strstr(instruction, "ss"))
+	{
+		swap(a);
+		swap(b);
+	}
+	else if (ft_strstr(instruction, "pa"))
+		push(b, a);
+	else if (ft_strstr(instruction, "pb"))
+		push(a, b);
+	else
+		return (0);
+	return (1);
+}
 
-    ft_printf("%s (size: %d): ", message, stack->size);
-    while (current)
-    {
-        ft_printf("[%d(pos:%d)] ", current->data, current->pos);
-        current = current->next;
-    }
-    ft_printf("\n");
+static int	second_exe(t_stack *a, t_stack *b, char *instruction)
+{
+	if (ft_strstr(instruction, "ra") && !ft_strstr(instruction, "rra"))
+		rotate(a);
+	else if (ft_strstr(instruction, "rb") && !ft_strstr(instruction, "rrb"))
+		rotate(b);
+	else if (ft_strstr(instruction, "rr") && !ft_strstr(instruction, "rrr"))
+	{
+		rotate(a);
+		rotate(b);
+	}
+	else if (ft_strstr(instruction, "rra"))
+		rev_rot(a);
+	else if (ft_strstr(instruction, "rrb"))
+		rev_rot(b);
+	else if (ft_strstr(instruction, "rrr"))
+	{
+		rev_rot(a);
+		rev_rot(b);
+	}
+	else
+		return (0);
+	return (1);
 }
 
 // =========================================
@@ -39,29 +71,7 @@ void print_detailed_stack(t_stack *stack, const char *message)
 
 int	execute_instruction(t_stack *a, t_stack *b, char *instruction)
 {
-	if (ft_strcmp(instruction, "sa\n") == 0)
-		sa(a);
-	else if (ft_strcmp(instruction, "sb\n") == 0)
-		sb(b);
-	else if (ft_strcmp(instruction, "ss\n") == 0)
-		ss(a, b);
-	else if (ft_strcmp(instruction, "pa\n") == 0)
-		pa(a, b);
-	else if (ft_strcmp(instruction, "pb\n") == 0)
-		pb(a, b);
-	else if (ft_strcmp(instruction, "ra\n") == 0)
-		ra(a);
-	else if (ft_strcmp(instruction, "rb\n") == 0)
-		rb(b);
-	else if (ft_strcmp(instruction, "rr\n") == 0)
-		rr(a, b);
-	else if (ft_strcmp(instruction, "rra\n") == 0)
-		rra(a);
-	else if (ft_strcmp(instruction, "rrb\n") == 0)
-		rrb(b);
-	else if (ft_strcmp(instruction, "rrr\n") == 0)
-		rrr(a, b);
-	else
+	if (!first_exe(a, b, instruction) && !second_exe(a, b, instruction))
 		return (ERROR);
 	return (SUCCESS);
 }
@@ -84,6 +94,8 @@ int	read_and_execute(t_stack *a, t_stack *b)
 
 	while (1)
 	{
+		print_stack(a, "A");
+		print_stack(b, "B");  // Optionnel
 		byte = get_next_line(0, &line);
 		if (byte < 0 || !line)
 			return (ERROR);
@@ -92,7 +104,7 @@ int	read_and_execute(t_stack *a, t_stack *b)
 			free(line);
 			break ;
 		}
-		if (execute_instruction(a, b, line) == ERROR)
+		if (ft_strlen(line) > 1 && execute_instruction(a, b, line) == ERROR)
 		{
 			free(line);
 			return (ERROR);
@@ -102,17 +114,39 @@ int	read_and_execute(t_stack *a, t_stack *b)
 	return (SUCCESS);
 }
 
+void print_stack(t_stack *stack, char *name)
+{
+    t_node *current;
+
+    printf("\nStack %s:", name);
+    if (!stack || !stack->top || stack->size == 0)
+    {
+        printf(" (empty)\n");
+        return;
+    }
+    current = stack->top;
+    while (current)
+    {
+        printf(" %d", current->data);
+        current = current->next;
+    }
+    printf("\n");
+}
+
 int	main(int ac, char **av)
 {
 	t_stack	*a;
 	t_stack	*b;
 
-	if (ac < 2)
+	if (ac == 1)
 		return (0);
-	if (init_stacks(&a, &b, ac, av) == ERROR)
+	else if (ac == 2)
+		split_and_init(&a, &b, av);
+	else
 	{
-		ft_putendl_fd("Error", 2);
-		return (ERROR);
+		check_args(ac, av);
+		if (init_stacks(&a, &b, ac, av) == ERROR)
+			exit_error(a, b);
 	}
 	if (read_and_execute(a, b) == ERROR)
 	{
@@ -120,6 +154,8 @@ int	main(int ac, char **av)
 		free_stacks(a, b);
 		return (ERROR);
 	}
+	print_stack(a, "A");
+	print_stack(b, "B");
 	if (is_sorted(a) && is_empty(b))
 		ft_putendl_fd("\033[0;32mOK\033[0m", 1);
 	else

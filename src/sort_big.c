@@ -3,48 +3,98 @@
 /*                                                        :::      ::::::::   */
 /*   sort_big.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:41:06 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/06 12:22:11 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:48:17 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void	find_best_move(t_stack *a, t_stack *b, t_node **best)
+static int    get_index_at(t_stack *s, int pos)
 {
-	t_node	*current;
-	int		best_cost;
+    t_node  *current;
+    int     i;
 
-	current = b->top;
-	best_cost = INT_MAX;
-	*best = NULL;
-	while (current)
+    if (!s || !s->top)
+        return (-1);
+    current = s->top;
+    i = 0;
+    while (current && i < pos)
+    {
+        current = current->next;
+        i++;
+    }
+    if (!current)
+        return (-1);
+    return (current->index);
+}
+
+static int    get_target(t_stack *a, int b_val)
+{
+    t_node  *current;
+    t_node  *next;
+    int     pos;
+    int     max_pos;
+
+    if (!a->top)
+        return (0);
+    current = a->top;
+    pos = 0;
+    max_pos = find_max(a);
+    if (b_val > a->top->index && b_val > get_index_at(a, max_pos))
+        return ((max_pos + 1) % a->size);
+    while (current && current->next)
+    {
+        next = current->next;
+        if (b_val > current->index && b_val < next->index)
+            return (pos + 1);
+        current = current->next;
+        pos++;
+    }
+    return (0);
+}
+
+static int    get_cost(t_stack *s, int pos)
+{
+	if (pos <= s->size / 2)
+		return (pos);
+	return (s->size - pos);
+}
+
+static void    do_rotations(t_stack *s, int cost, char stack_name)
+{
+	while (cost > 0)
 	{
-		calculate_cost(current, a, b);
-		if (current->cost->total_cost < best_cost)
-		{
-			best_cost = current->cost->total_cost;
-			*best = current;
-		}
-		current = current->next;
+		if (stack_name == 'a')
+			ra(s);
+		else
+			rb(s);
+		cost--;
 	}
 }
 
-void	sort_big(t_stack *a, t_stack *b)
+static void    move_stack(t_stack *s, int pos, char stack_name)
 {
-	t_node	*best_node;
+	int cost;
 
-	index_stack(a);
-	init_chunks(a);
-	push_to_b(a, b);
-	sort_three(a);
-	while (b->size > 0)
-	{
-		find_best_move(a, b, &best_node);
-		execute_moves(a, b, best_node);
-		pa(a, b);
-	}
+	cost = get_cost(s, pos);
+	do_rotations(s, cost, stack_name);
 }
 
+void    sort_big(t_stack *a, t_stack *b)
+{
+    int     target_pos;
+
+    push_to_b(a, b);
+    sort_three(a);
+    while (b->size > 0)
+    {
+        target_pos = get_target(a, b->top->index);
+        move_stack(a, target_pos, 'a');
+        pa(a, b);
+        if (a->top->index > a->top->next->index)
+            ra(a);
+    }
+}

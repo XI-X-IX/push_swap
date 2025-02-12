@@ -3,14 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   rev_functions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 13:49:58 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/06 00:18:01 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/10 11:08:45 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void	rev_rot(t_stack *stack)
+{
+	t_node	*prev;
+	t_node	*last;
+
+	if (!stack || !stack->top || !stack->top->next)
+		return ;
+	if (stack->size == 2)
+	{
+		swap(stack);
+		return ;
+	}
+	prev = NULL;
+	last = stack->top;
+	while (last->next != NULL)
+	{
+		prev = last;
+		last = last->next;
+	}
+	prev->next = NULL;
+	last->next = stack->top;
+	stack->top->prev = last;
+	stack->top = last;
+	last->prev = NULL;
+	stack->last = prev;
+}
 
 // =============================================================================
 // rra & rrb & rrr
@@ -25,62 +52,19 @@
 
 void	rra(t_stack *a)
 {
-	t_node	*prev;
-	t_node	*i;
-
-	if (!a || !a->top || !a->top->next)
-		return ;
-	if (a->size == 2)
-	{
-		sa(a);
-		return ;
-	}
-	prev = NULL;
-	i = a->top;
-	while (i->next != NULL)
-	{
-		prev = i;
-		i = i->next;
-	}
-	prev->next = NULL;
-	i->next = a->top;
-	a->top = i;
-	// ft_printf("Stack A: ");
-	// print_stack(a);
+	rev_rot(a);
 	ft_putendl_fd("rra", 1);
 }
 
 void	rrb(t_stack *b)
 {
-	t_node	*prev;
-	t_node	*i;
-
-	if (!b || !b->top || !b->top->next)
-		return ;
-	if (b->size == 2)
-	{
-		sa(b);
-		return ;
-	}
-	prev = NULL;
-	i = b->top;
-	while (i->next != NULL)
-	{
-		prev = i;
-		i = i->next;
-	}
-	prev->next = NULL;
-	i->next = b->top;
-	b->top = i;
-	// ft_printf("Stack B: ");
-	// print_stack(b);
+	rev_rot(b);
 	ft_putendl_fd("rrb", 1);
 }
 
 void	rrr(t_stack *a, t_stack *b)
 {
-	rra(a);
-	rrb(b);
-	// print_stacks(a, b);
+	rev_rot(a);
+	rev_rot(b);
 	ft_putendl_fd("rrr", 1);
 }

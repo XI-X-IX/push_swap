@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   push_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:23:59 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/06 00:18:17 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/10 11:08:03 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void	push(t_stack *src, t_stack *dst)
+void	push(t_stack *src, t_stack *dst)
 {
 	t_node	*temp;
 
@@ -48,13 +48,11 @@ static void	push(t_stack *src, t_stack *dst)
 void	pa(t_stack *a, t_stack *b)
 {
 	push(b, a);
-	// print_stacks(a, b);
 	ft_putendl_fd("pa", 1);
 }
 
 void	pb(t_stack *a, t_stack *b)
 {
 	push(a, b);
-	// print_stacks(a, b);
 	ft_putendl_fd("pb", 1);
 }

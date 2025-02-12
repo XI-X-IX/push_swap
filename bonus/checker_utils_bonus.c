@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   checker_utils_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 19:47:48 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/07 16:23:02 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/10 09:17:45 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker_bonus.h"
-
 
 int	is_empty(t_stack *b)
 {

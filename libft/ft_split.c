@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 23:35:07 by aledos-s          #+#    #+#             */
-/*   Updated: 2024/10/15 17:57:38 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:14:45 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,18 @@ char	**ft_split(char const *s, char c)
 {
 	size_t	words;
 	char	**split;
+	char	**result;
 
-	if (s == NULL)
+	if (!s)
 		return (NULL);
 	words = ft_count_words(s, c);
 	split = malloc ((words + 1) * sizeof (char *));
 	if (!split)
 		return (NULL);
-	split = ft_fill(split, s, c);
-	return (split);
+	result = ft_fill(split, s, c);
+	if (!result)
+		free(split);
+	return (result);
 }
 
 /*

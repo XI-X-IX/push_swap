@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aledos-s <aledos-s@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 22:00:20 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/08 11:55:39 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:24:56 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,8 @@ void	split_and_init(t_stack **a, t_stack **b, char **args)
 	{
 		free_stack(*a);
 		free_stack(*b);
+		free_split(tab);
 		exit(ERROR);
 	}
-	free(tab);
+	free_split(tab);
 }
-
