@@ -6,63 +6,54 @@
 /*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:41:36 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/12 14:44:14 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/13 23:32:18 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	find_min(t_stack *a)
+int	find_min(t_stack *stack)
 {
 	t_node	*current;
-	int		min;
-	int		pos;
+	t_node	*min_node;
 	int		min_pos;
+	int		current_pos;
 
-	if (!a || !a->top)
-		return (-1);
-
-	current = a->top;
-	min = current->data;
+	if (!stack || !stack->top)
+		return (0);
+	current = stack->top;
+	min_node = current;
 	min_pos = 0;
-	pos = 0;
+	current_pos = 0;
 	while (current)
 	{
-		if (current->data < min)
+		if (current->data < min_node->data)
 		{
-			min = current->data;
-			min_pos = pos;
+			min_node = current;
+			min_pos = current_pos;
 		}
 		current = current->next;
-		pos++;
+		current_pos++;
 	}
 	return (min_pos);
 }
 
-int	find_max(t_stack *a)
+int	find_max(t_stack *stack)
 {
 	t_node	*current;
-	int		max;
-	int		pos;
-	int		max_pos;
+	t_node	*max_node;
 
-	if (!a || !a->top)
-		return (-1);
-	current = a->top;
-	max = current->index;
-	max_pos = 0;
-	pos = 0;
+	if (!stack || !stack->top)
+		return (0);
+	current = stack->top;
+	max_node = current;
 	while (current)
 	{
-		if (current->index > max)
-		{
-			max = current->index;
-			max_pos = pos;
-		}
+		if (current->data > max_node->data)
+			max_node = current;
 		current = current->next;
-		pos++;
 	}
-	return (max_pos);
+	return (max_node->pos);
 }
 
 int	find_position(t_stack *a, int index)

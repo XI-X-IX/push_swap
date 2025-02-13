@@ -6,7 +6,7 @@
 /*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 15:02:43 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/12 13:18:03 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/13 23:32:35 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,21 @@
 
 static void	rotate_to_target_a(t_stack *a, int target_pos)
 {
-	while (target_pos > 0 && target_pos <= a->size / 2)
+	if (target_pos <= a->size / 2)
 	{
-		ra(a);
-		target_pos--;
+		while (target_pos > 0)
+		{
+			ra(a);
+			target_pos--;
+		}
 	}
-	while (target_pos > a->size / 2 && target_pos < a->size)
+	else
 	{
-		rra(a);
-		target_pos++;
+		while (target_pos < a->size)
+		{
+			rra(a);
+			target_pos++;
+		}
 	}
 }
 
@@ -59,6 +65,8 @@ void	sort_four(t_stack *a, t_stack *b)
 {
 	int	min_pos;
 
+	if (!a || !b || a->size < 4)
+		return ;
 	min_pos = find_min(a);
 	rotate_to_target_a(a, min_pos);
 	pb(a, b);

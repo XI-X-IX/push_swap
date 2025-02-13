@@ -6,11 +6,34 @@
 /*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 20:33:18 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/10 13:35:24 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/13 12:28:25 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+// =============================================================================
+// init_cost
+// =============================================================================
+//
+// Alloue et initialise une structure t_cost.
+//
+// Retourne un pointeur vers la nouvelle structure t_cost allouée et
+// initialisée à 0. Si l'allocation échoue, retourne NULL.
+//
+// @return: pointeur vers la structure t_cost, ou NULL si l'allocation échoue
+// =============================================================================
+
+t_cost	*init_cost(void)
+{
+	t_cost	*cost;
+
+	cost = malloc(sizeof(t_cost));
+	if (!cost)
+		return (NULL);
+	ft_memset(cost, 0, sizeof(t_cost));
+	return (cost);
+}
 
 // =============================================================================
 // init_empty_stack
@@ -57,6 +80,12 @@ t_node	*new_node(int data)
 		return (NULL);
 	ft_memset(new, 0, sizeof(t_node));
 	new->data = data;
+	new->cost = init_cost();
+	if (!new->cost)
+	{
+		free(new);
+		return (NULL);
+	}
 	return (new);
 }
 

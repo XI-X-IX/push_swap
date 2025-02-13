@@ -6,7 +6,7 @@
 /*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 23:57:38 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/10 17:50:18 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/14 00:10:08 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,24 @@ static int	first_exe(t_stack *a, t_stack *b, char *instruction)
 
 static int	second_exe(t_stack *a, t_stack *b, char *instruction)
 {
-	if (ft_strstr(instruction, "ra") && !ft_strstr(instruction, "rra"))
-		rotate(a);
-	else if (ft_strstr(instruction, "rb") && !ft_strstr(instruction, "rrb"))
-		rotate(b);
-	else if (ft_strstr(instruction, "rr") && !ft_strstr(instruction, "rrr"))
+	if (ft_strstr(instruction, "rrr"))
 	{
-		rotate(a);
-		rotate(b);
+		rev_rot(a);
+		rev_rot(b);
 	}
 	else if (ft_strstr(instruction, "rra"))
 		rev_rot(a);
 	else if (ft_strstr(instruction, "rrb"))
 		rev_rot(b);
-	else if (ft_strstr(instruction, "rrr"))
+	else if (ft_strstr(instruction, "rr"))
 	{
-		rev_rot(a);
-		rev_rot(b);
+		rotate(a);
+		rotate(b);
 	}
+	else if (ft_strstr(instruction, "ra"))
+		rotate(a);
+	else if (ft_strstr(instruction, "rb"))
+		rotate(b);
 	else
 		return (0);
 	return (1);
@@ -94,8 +94,6 @@ int	read_and_execute(t_stack *a, t_stack *b)
 
 	while (1)
 	{
-		print_stack(a, "A");
-		print_stack(b, "B");  // Optionnel
 		byte = get_next_line(0, &line);
 		if (byte < 0 || !line)
 			return (ERROR);
@@ -104,33 +102,17 @@ int	read_and_execute(t_stack *a, t_stack *b)
 			free(line);
 			break ;
 		}
-		if (ft_strlen(line) > 1 && execute_instruction(a, b, line) == ERROR)
+		if (ft_strlen(line) > 1)
 		{
-			free(line);
-			return (ERROR);
+			if (execute_instruction(a, b, line) == ERROR)
+			{
+				free(line);
+				return (ERROR);
+			}
 		}
 		free(line);
 	}
 	return (SUCCESS);
-}
-
-void print_stack(t_stack *stack, char *name)
-{
-    t_node *current;
-
-    printf("\nStack %s:", name);
-    if (!stack || !stack->top || stack->size == 0)
-    {
-        printf(" (empty)\n");
-        return;
-    }
-    current = stack->top;
-    while (current)
-    {
-        printf(" %d", current->data);
-        current = current->next;
-    }
-    printf("\n");
 }
 
 int	main(int ac, char **av)
@@ -154,10 +136,8 @@ int	main(int ac, char **av)
 		free_stacks(a, b);
 		return (ERROR);
 	}
-	print_stack(a, "A");
-	print_stack(b, "B");
 	if (is_sorted(a) && is_empty(b))
-		ft_putendl_fd("\033[0;32mOK\033[0m", 1);
+		ok_end();
 	else
 		ft_putendl_fd("\033[0;31mKO\033[0m", 1);
 	free_stacks(a, b);

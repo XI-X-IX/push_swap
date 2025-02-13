@@ -6,7 +6,7 @@
 /*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 13:49:58 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/10 11:08:45 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/13 13:14:12 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ void	rev_rot(t_stack *stack)
 
 	if (!stack || !stack->top || !stack->top->next)
 		return ;
-	if (stack->size == 2)
-	{
-		swap(stack);
-		return ;
-	}
 	prev = NULL;
 	last = stack->top;
 	while (last->next != NULL)

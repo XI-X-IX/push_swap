@@ -6,7 +6,7 @@
 /*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 22:20:24 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/12 14:54:27 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/14 00:14:25 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h> // malloc & exit
 # include "libft/libft.h"
 # include "libft/printf/ft_printf.h"
-# include <stdio.h> //////////////
+# include <stdbool.h>
 
 // COLORS
 # define OK_COLOR		"\033[0;32m"
@@ -48,6 +48,17 @@ typedef struct s_node
 	int				data;
 	int				index;
 	int				pos;
+	int				target_pos;
+	int				b_pos;
+	struct s_node	*target_node;
+	bool			above_median;
+	bool			cheapest;
+	int				a_forward_rot;
+	int				a_reverse_rot;
+	int				b_forward_rot;
+	int				b_reverse_rot;
+	int				a_size;
+	int				b_size;
 	t_cost			*cost;
 	struct s_node	*next;
 	struct s_node	*prev;
@@ -57,12 +68,12 @@ typedef struct s_stack
 {
 	int				size;
 	int				median;
-	int				chunks;
 	struct s_node	*top;
 	struct s_node	*last;
 }				t_stack;
 
 // INIT
+t_cost	*init_cost(void);
 void	init_empty_stack(t_stack **b);
 int		init_stacks(t_stack **a, t_stack **b, int ac, char **av);
 int		fill_stack(t_stack *a, int ac, char **av);
@@ -117,49 +128,55 @@ void	find_and_position_min(t_stack *a, t_stack *b);
 // SORT_BIG
 void	sort_big(t_stack *a, t_stack *b);
 
-// SORT_BIG_OPTI
+// SORT_BIG_UTILS
+void	set_position(t_stack *s);
+void	pre_push(t_stack *stack, t_node *top_node, char stack_name);
+void	min_on_top(t_stack *a);
 
-// SORT_BIG_COST
-// void	calculate_basic_cost(t_node *node, int pos, int size);
-// void	calculate_dual_cost(t_node *node, t_stack *a, t_stack *b);
-// int		get_rotation_cost(int pos, int size);
-// void	calculate_optimized_cost(t_node *node, t_stack *a, t_stack *b);
-// void	init_cost(t_node *node);
+// SORT_A
+void	set_cheapest(t_stack *stack);
+void	sort_a(t_stack *a, t_stack *b);
 
-// void	free_all_costs(t_stack *stack);
-// void	cleanup_costs(t_stack *b);
-// int		abs(int n);
-// int		min(int a, int b);
+// SORT_B
+void	sort_b(t_stack *a, t_stack *b);
+
+// SORT_PUSH
+void	rotate_both(t_stack *a, t_stack *b, t_node *cheapest_node);
+void	rev_rotate_both(t_stack *a, t_stack *b, t_node *cheapest_node);
+void	push_to_b(t_stack *a, t_stack *b);
+void	push_to_a(t_stack *a, t_stack *b);
+
+// SORT_UTILS
+t_node	*find_min_node(t_stack *a);
+t_node	*find_max_node(t_stack *a);
+int		find_min(t_stack *stack);
+int		find_max(t_stack *stack);
+int		find_position(t_stack *a, int min);
+void	sort_stack(t_stack *a, t_stack *b);
+int		is_sorted(t_stack *a);
+int		get_element_position(t_stack *stack, t_node *element);
+
+void	print_stack(t_stack *a);
+void	print_stacks(t_stack *a, t_stack *b);
+void	prints(t_stack *a);
+int		min(int a, int b);
 
 // SORT_BIG_INDEX
 void	index_stack(t_stack *a);
 
-// SORT_BIG_EXEC
-void	execute_optimized_moves(t_stack *a, t_stack *b, t_node *node);
+// OPTI_SORT
+void	rotate_stacks(t_stack *a, t_stack *b, t_node *element);
+t_node	*find_cheapest_element(t_stack *b);
 
-// SORT_BIG_MEDIAN
-void	find_median(t_stack *stack);
+void	smart_push_swap(t_stack *a, t_stack *b);
+void	find_best_position(t_stack *a, t_node *b_element, int *best_pos,
+			int *best_val);
+void	find_min_position_w_pointer(t_stack *a, int *best_pos, int *best_val);
+void	find_insert_position(t_stack *a, t_node *b_element);
+void	find_min_max(t_stack *a, int *min, int *max);
+int		get_element_position(t_stack *stack, t_node *element);
+void	align_stack(t_stack *a);
 
-// SORT_BIG_POSITION
-// int		get_simple_position(t_stack *stack, int value);
-// int		get_best_target(t_stack *stack, int value, int min, int max);
-// void	rotate_to_target_a(t_stack *stack, int pos);
-// void	rotate_to_target_b(t_stack *stack, int pos);
-// int		find_closest_position(t_stack *stack, int value);
-
-// SORT_BIG_CHUNKS
-void	push_to_b(t_stack *a, t_stack *b);
-void	init_chunks(t_stack *a);
-
-// SORT_UTILS
-int		find_min(t_stack *a);
-int		find_max(t_stack *a);
-int		find_position(t_stack *a, int min);
-void	sort_stack(t_stack *a, t_stack *b);
-int		is_sorted(t_stack *a);
-
-void	print_stack(t_stack *a);
-void	print_stacks(t_stack *a, t_stack *b);
-void    prints(t_stack *a);
+void	calculate_rotation_costs(t_stack *a, t_stack *b);
 
 #endif
