@@ -6,7 +6,7 @@
 /*   By: aledos-s <alex>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 22:20:24 by aledos-s          #+#    #+#             */
-/*   Updated: 2025/02/14 00:14:25 by aledos-s         ###   ########.fr       */
+/*   Updated: 2025/02/18 22:04:23 by aledos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include <unistd.h> // write & read
 # include <stdlib.h> // malloc & exit
+# include <stdbool.h>
 # include "libft/libft.h"
 # include "libft/printf/ft_printf.h"
-# include <stdbool.h>
 
 // COLORS
 # define OK_COLOR		"\033[0;32m"
