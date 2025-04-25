@@ -11,9 +11,8 @@
 <br><br>
 
 
-## ⚙️ Instructions
+## ⚙️ Compilation
 
-### Compilation
 
 ```bash
 make
