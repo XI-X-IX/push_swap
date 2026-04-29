@@ -4,7 +4,7 @@
 
 <br><br>
 
-## 🚀 Objectif
+## Objectif
 
 Écrire un programme nommé `push_swap` qui génère une séquence d'opérations pour trier une pile d'entiers dans l'ordre croissant, en utilisant une deuxième pile comme outil temporaire, et en minimisant le nombre de mouvements.
 
